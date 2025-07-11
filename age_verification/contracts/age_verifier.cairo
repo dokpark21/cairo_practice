@@ -1,61 +1,53 @@
-#[starknet::interface]
-pub trait IAgeVerifier<T> {
-    fn verify_age_zk(self: @T, commitment: felt252, zk_proof: Array<felt252>) -> bool;
-    fn set_min_age(ref self: T, new_min_age: u256);
-    fn get_min_age(self: @T) -> u256;
+use integrity::{
+    StarkProofWithSerde, VerifierSettings, PoseidonImpl, StarkProof, ProofVerified
+};
+use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
+use starknet::{ContractAddress};
+
+#[storage]
+struct Storage {
+    owner: ContractAddress,
+    composition_contract_address: ContractAddress,
+    oods_contract_address: ContractAddress
 }
 
-#[starknet::contract]
-mod AgeVerifier {
-    use integrity::StarkProofWithSerde;
-    use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
-    use starknet::{ContractAddress, get_caller_address};
+fn verify_age_zk(
+    self: @ContractState,
+    commitment: felt252,
+    min_age: felt252,
+    zk_proof: Array<felt252>
+) -> bool {
+    // zk_proof 변환
+    let stark_proof: StarkProof = StarkProofWithSerde { data: zk_proof }.into();
 
-    #[storage]
-    struct Storage {
-        min_age: u256,
-        owner: ContractAddress
-    }
+    // VerifierSettings 정의 (prover와 동일하게 구성)
+    let settings = VerifierSettings {
+        memory_verification: 0,  // strict 모드
+        num_public_memory_pages: 0,
+        ..VerifierSettings::default()
+    };
 
-    #[constructor]
-    fn constructor(
-        ref self: ContractState,
-        _min_age: u256,
-        _owner: ContractAddress
-    ) {
-        self.min_age.write(_min_age);
-        self.owner.write(_owner);
-    }
+    // zk-proof 검증
+    let _security_bits = stark_proof.verify(
+        self.composition_contract_address.read(),
+        self.oods_contract_address.read(),
+        @settings
+    );
 
-    #[abi(embed_v0)]
-    impl AgeVerifierImpl of super::IAgeVerifier<ContractState> {
-        /// zk-STARK proof 기반으로 나이 증명을 검증
-        fn verify_age_zk(
-            self: @ContractState,
-            commitment: felt252,
-            zk_proof: Array<felt252>
-        ) -> bool {
-            let min_age = self.min_age.read();
+    // fact (이벤트 용) — 선택적
+    let (program_hash, output_hash) = stark_proof.public_input.verify_strict();
+    let fact = PoseidonImpl::new()
+        .update(program_hash)
+        .update(output_hash)
+        .finalize();
 
-            // zk-verifier 호출: 이 모듈은 off-chain에서 컴파일된 회로에서 생성돼야 함
-            // let is_valid = verifier_module::verify(
-            //     public_inputs = [commitment, min_age.low].span(), // min_age는 u256이므로 low만 전달 (felt252만 가능)
-            //     proof = zk_proof
-            // );
+    let event = ProofVerified {
+        job_id: 0,
+        fact,
+        security_bits: _security_bits,
+        settings
+    };
+    self.emit(event);
 
-            assert(is_valid == true, 'Invalid zk-proof');
-            return true;
-        }
-
-        fn set_min_age(ref self: ContractState, new_min_age: u256) {
-            let caller = get_caller_address();
-            let owner = self.owner.read();
-            assert(caller == owner, 'Only owner can set min_age');
-            self.min_age.write(new_min_age);
-        }
-
-        fn get_min_age(self: @ContractState) -> u256 {
-            self.min_age.read()
-        }
-    }
+    return true;
 }
