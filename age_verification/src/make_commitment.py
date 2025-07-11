@@ -1,6 +1,5 @@
 from typing import List
 
-# 아래 함수들과 상수는 네가 준 코드에서 가져온 것
 from poseidon_py.c_bindings import hades_permutation
 from poseidon_py.utils import blockify
 
