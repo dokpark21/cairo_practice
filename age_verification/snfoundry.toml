@@ -9,3 +9,12 @@
 # wait-params = { timeout = 300, retry-interval = 10 }     # Wait for submitted transaction parameters
 # block-explorer = "StarkScan"                             # Block explorer service used to display links to transaction details
 # show-explorer-links = true                               # Print links pointing to pages with transaction details in the chosen block explorer
+
+[sncast.myAccount1]
+account = "account-3"
+accounts-file = "/Users/parkssanghyeon/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_8/mI-8iQEK1K8m_VsMscNTMVx4EBtuDVmK"
+account-type = "argent"
+
+[sncast.default]
+account = "account-3"
