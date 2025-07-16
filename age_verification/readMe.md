@@ -102,7 +102,7 @@ nargo execute witness
 
 - 위 command를 입력하면 Prover.toml의 input과 관련된 witness가 생성이 된다.
 
-![alt text](image-1.png)
+![alt text](./public/image-1.png)
 
 이제 witness까지 만들었으니 아래의 command를 사용해 proof를 생성해주면 된다.
 
