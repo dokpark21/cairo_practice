@@ -159,7 +159,7 @@ Proof를 검증하기 전에 우선 위에서 생성한 veryfier contract를 onc
 
 우선 위에서 컨트랙트를 생성하며 생긴 snfoundry folder로 들어가줘야한다.
 
-![image.png](attachment:bee8eb0b-b154-4e77-9e12-2e1e804c15ce:image.png)
+![alt text](image-3.png)
 
 ### import account
 
@@ -167,7 +167,7 @@ starknet sepolia 네트워크에 배포할 것이기 때문에 faucet을 받아�
 
 - 여기서는 ready wallet을 사용, braavos 같은 다른 wallet도 가능.
 
-![image.png](attachment:e7f81e22-1710-4e94-815d-5639fe238d2d:image.png)
+![alt text](image-4.png)
 
 - 지갑은 반드시 smart account가 배포되어있어야 한다.
   - 설정에 들어가 확인해보면 되고 만약 경고 표시와 함께 smart account가 배포가 되어있지 않다고 한다면 지갑 어플리케이션 내부에서 배포가 가능하다(gas fee는 지불해야 한다).
@@ -198,7 +198,7 @@ sncast account import --add-profile myAccount1 \
 
 - 아니면 다른 사람이 declare한 컨트랙트의 class-hash만 받아서 바로 배포도 가능하다(동일한 기능일 경우).
 
-![image.png](attachment:0d985d2c-0b13-49a3-aebe-3948d3dce393:image.png)
+![alt text](image-5.png)
 
 우리가 배포할 검증 컨트랙트이다.
 
@@ -211,7 +211,7 @@ sncast를 사용해 컨트랙트를 declare 한다.
 
 output:
 
-![image.png](attachment:10070130-90f1-4a4a-bafa-f708c9da3164:image.png)
+![alt text](image-6.png)
 
 ### deploy contact
 
@@ -222,7 +222,7 @@ sncast --account oz_account deploy --network sepolia \
 --class-hash 0x07ea5ecd159e758e39b72aa5633c7bdb100a0a5940ae6b6552cbf934ef650678
 ```
 
-![image.png](attachment:51159a4b-c987-414b-b344-eb25bc75dab8:image.png)
+![alt text](image-7.png)
 
 ## Proof 검증 Tx call
 
@@ -248,7 +248,7 @@ sncast --account oz_account call \
 --calldata $(cat ./target/calldata.text)
 ```
 
-![image.png](attachment:d93e3de0-dc13-4b6d-8f07-5c2f88f8abd0:image.png)
+![alt text](image-8.png)
 
 ### response
 
