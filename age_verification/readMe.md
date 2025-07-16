@@ -21,7 +21,7 @@ poseidon hash부분: noir의 zk friendly poseidon hash 사용(https://github.com
 
 - poseidon `generic type T`가 현재 컴파일러에서는 금지된 Issue 존재
 - 또한 해당 Poseidon 함수는 starknet의 poseidon 함수와는 라운드 및 상수등이 다름
-  ![alt text](image.png)
+  ![alt text](./public/image.png)
   - 포크를 떠서 직접 모두 수정하거나 다른 poseidon 라이브러리로 대체해야 한다.
 
 **그냥 std::hash의 Poseidon2를 사용하면 된다.**
@@ -110,7 +110,7 @@ nargo execute witness
 bb prove -s ultra_honk --oracle_hash starknet --zk -b target/circuit.json -w target/witness.gz -o target/
 ```
 
-![alt text](image-2.png)
+![alt text](./public/image-2.png)
 
 ## Verification key
 
@@ -159,7 +159,7 @@ Proof를 검증하기 전에 우선 위에서 생성한 veryfier contract를 onc
 
 우선 위에서 컨트랙트를 생성하며 생긴 snfoundry folder로 들어가줘야한다.
 
-![alt text](image-3.png)
+![alt text](./public/image-3.png)
 
 ### import account
 
@@ -167,7 +167,7 @@ starknet sepolia 네트워크에 배포할 것이기 때문에 faucet을 받아�
 
 - 여기서는 ready wallet을 사용, braavos 같은 다른 wallet도 가능.
 
-![alt text](image-4.png)
+![alt text](./public/image-4.png)
 
 - 지갑은 반드시 smart account가 배포되어있어야 한다.
   - 설정에 들어가 확인해보면 되고 만약 경고 표시와 함께 smart account가 배포가 되어있지 않다고 한다면 지갑 어플리케이션 내부에서 배포가 가능하다(gas fee는 지불해야 한다).
@@ -198,7 +198,7 @@ sncast account import --add-profile myAccount1 \
 
 - 아니면 다른 사람이 declare한 컨트랙트의 class-hash만 받아서 바로 배포도 가능하다(동일한 기능일 경우).
 
-![alt text](image-5.png)
+![alt text](./public/image-5.png)
 
 우리가 배포할 검증 컨트랙트이다.
 
@@ -211,7 +211,7 @@ sncast를 사용해 컨트랙트를 declare 한다.
 
 output:
 
-![alt text](image-6.png)
+![alt text](./public/image-6.png)
 
 ### deploy contact
 
@@ -222,7 +222,7 @@ sncast --account oz_account deploy --network sepolia \
 --class-hash 0x07ea5ecd159e758e39b72aa5633c7bdb100a0a5940ae6b6552cbf934ef650678
 ```
 
-![alt text](image-7.png)
+![alt text](./public/image-7.png)
 
 ## Proof 검증 Tx call
 
@@ -248,7 +248,7 @@ sncast --account oz_account call \
 --calldata $(cat ./target/calldata.text)
 ```
 
-![alt text](image-8.png)
+![alt text](./public/image-8.png)
 
 ### response
 
