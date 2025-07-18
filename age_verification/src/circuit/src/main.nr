@@ -1,12 +1,7 @@
 // src/main.nr
 use std::hash::poseidon2::Poseidon2::hash;
 
-fn main(
-    age: Field,
-    nonce: Field,
-    commitment: pub Field,
-    min_age: pub Field,
-) {
+fn main(age: Field, nonce: Field, commitment: pub Field, min_age: pub Field) {
     let recomputed_commitment: Field = compute_commitment(age, nonce);
     assert(recomputed_commitment == commitment, "Invalid commitment");
 
